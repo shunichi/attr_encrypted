@@ -160,11 +160,11 @@ module AttrEncrypted
       end
 
       define_method(attribute) do
-        instance_variable_get("@#{attribute}") || instance_variable_set("@#{attribute}", decrypt(attribute, send(encrypted_attribute_name)))
+        instance_variable_get("@#{attribute}") || instance_variable_set("@#{attribute}", attr_encrypted_decrypt(attribute, send(encrypted_attribute_name)))
       end
 
       define_method("#{attribute}=") do |value|
-        send("#{encrypted_attribute_name}=", encrypt(attribute, value))
+        send("#{encrypted_attribute_name}=", attr_encrypted_encrypt(attribute, value))
         instance_variable_set("@#{attribute}", value)
       end
 
@@ -325,7 +325,7 @@ module AttrEncrypted
     #
     #  @user = User.new('some-secret-key')
     #  @user.decrypt(:email, 'SOME_ENCRYPTED_EMAIL_STRING')
-    def decrypt(attribute, encrypted_value)
+    def attr_encrypted_decrypt(attribute, encrypted_value)
       attr_encrypted_attributes[attribute.to_sym][:operation] = :decrypting
       attr_encrypted_attributes[attribute.to_sym][:value_present] = self.class.not_empty?(encrypted_value)
       self.class.decrypt(attribute, encrypted_value, evaluated_attr_encrypted_options_for(attribute))
@@ -346,7 +346,7 @@ module AttrEncrypted
     #
     #  @user = User.new('some-secret-key')
     #  @user.encrypt(:email, 'test@example.com')
-    def encrypt(attribute, value)
+    def attr_encrypted_encrypt(attribute, value)
       attr_encrypted_attributes[attribute.to_sym][:operation] = :encrypting
       attr_encrypted_attributes[attribute.to_sym][:value_present] = self.class.not_empty?(value)
       self.class.encrypt(attribute, value, evaluated_attr_encrypted_options_for(attribute))
