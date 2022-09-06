@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
   s.homepage = 'http://github.com/attr-encrypted/attr_encrypted'
   s.license = 'MIT'
 
-  s.has_rdoc = false
-  s.rdoc_options = ['--line-numbers', '--inline-source', '--main', 'README.rdoc']
+  # s.has_rdoc = false
+  # s.rdoc_options = ['--line-numbers', '--inline-source', '--main', 'README.rdoc']
 
   s.require_paths = ['lib']
 
